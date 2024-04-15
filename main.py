@@ -59,12 +59,13 @@ def ask_chatgpt(prompt):
     )
     return chat_completion.choices[0].message.content
 
+
 def click_picture(response):
     words = response.split(" ")
     if "the" in words:
         print("clicking")
         pyautogui.click("exampleProfilePic.png")
-        
+
 
 if __name__ == "__main__":
     while True:
@@ -72,5 +73,3 @@ if __name__ == "__main__":
         response = ask_chatgpt(prompt)
         type_message(response)
         click_picture(response)
-   
-    
