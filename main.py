@@ -70,11 +70,23 @@ def click_picture(response, picture):
         print("clicking")
     except Exception as e:
         print("not found", e)
+        
+def ask_gag_choice(items):
+    prompt = f"You have {len(items)} and you need to pick exactly 1 of them. Say back to me only the name of the item. Here are the items: "
+    
+    for item in items:
+        prompt += item + ", "
+                
+    return ask_chatgpt(prompt)
+
 
 
 if __name__ == "__main__":
-    while True:
-        prompt = input("Ask a question: ")
-        response = ask_chatgpt(prompt)
-        type_message(response)
-        click_picture("", "./pictures/op_slice.png")
+    #while True:
+    items = ['cupcake', 'fruit pie', 'fire hose', 'balls']
+    response = ask_gag_choice(items)
+    print(response)
+        # prompt = input("Ask a question: ")
+        # response = ask_chatgpt(prompt)
+        # type_message(response)
+        # click_picture("", "./pictures/op_slice.png")
