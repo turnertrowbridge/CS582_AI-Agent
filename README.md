@@ -3,7 +3,7 @@
 `source env/bin/activate`  
 
 # 2. Install the requirements  
-`pip install -r requirements.txt`  
+`pip3 install -r requirements.txt`  
 
 # 3. Copy config.py.example to config.py and add your API key  
 `cp config.py.example config.py`  
