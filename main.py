@@ -28,7 +28,7 @@ def launch_game():
 
 def type_message(message):
     pyautogui.click(text_input_x, text_input_y)
-    print("Typing message: ", message)
+    print("Typing message:", message)
     pyautogui.press("t")
     time.sleep(0.5)
     for char in message:
