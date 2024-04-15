@@ -9,3 +9,7 @@
 `cp config.py.example config.py`  
 `API_KEY = "YOUR_API_KEY"`  
 
+
+
+### Testing doc
+https://docs.google.com/document/d/18BpiGpcY3FIm3n242Mb67ZBpHs-NfdwIDRACQAbr5ZI/edit?usp=sharing
