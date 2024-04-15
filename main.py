@@ -81,12 +81,42 @@ def ask_gag_choice(items):
 
 
 
-if __name__ == "__main__":
-    #while True:
-    items = ['cupcake', 'fruit pie', 'fire hose', 'balls']
-    response = ask_gag_choice(items)
-    print(response)
-        # prompt = input("Ask a question: ")
-        # response = ask_chatgpt(prompt)
+def find_items():
+    items = ["op_slice.png", "slice.png"]
+    found_items = []
+    for item in items:
+        res = None
+        try:
+            res = pyautogui.locateOnScreen(item, confidence=0.9)
+        except Exception as e:
+            print("Could not fine item", item, "\nerror:", e)
+        if res:
+            found_items.append(item)
+    return found_items
+
+
+def ai_loop():
+    while True:
+        found_items = find_items()  # returns list of item.png
+        if not found_items:
+            print("No items found")
+            time.sleep(1)
+            continue
+        # forward items to the AI and get item back
+        chosen_item = random.choice(found_items)
+
+        # ask_chatgpt about the item
         # type_message(response)
-        # click_picture("", "./pictures/op_slice.png")
+        type_message("I chose")
+        # pyautogui.click(chosen_item)
+
+def old_test():
+    while True:
+        prompt = input("Ask a question: ")
+        response = ask_chatgpt(prompt)
+        type_message(response)
+        click_picture("", "./pictures/op_slice.png")
+
+
+if __name__ == "__main__":
+    old_test()
