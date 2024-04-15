@@ -1,6 +1,6 @@
 # 0. Clone project (You need to setup your github command line)
-`git clone https://github.com/turnertrowbridge/CS582_AI-Agent`
-or the GitHub Desktop app
+`git clone https://github.com/turnertrowbridge/CS582_AI-Agent`  
+or the GitHub Desktop app  
 
 
 # 1. Install and startup a virtual environment  
