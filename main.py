@@ -77,4 +77,4 @@ if __name__ == "__main__":
         prompt = input("Ask a question: ")
         response = ask_chatgpt(prompt)
         type_message(response)
-        click_picture("", "op_slice.png")
+        click_picture("", "./pictures/op_slice.png")
