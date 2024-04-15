@@ -62,12 +62,14 @@ def ask_chatgpt(prompt):
 
 def click_picture(response, picture):
     words = response.split(" ")
-    if "the" in words:
-        print("clicking")
-        pyautogui.click(picture, confidence=0.9)
+    try:
+        # if "the" in words:
         res = pyautogui.locateOnScreen(picture, confidence=0.9)
         print(res)
         pyautogui.click(res)
+        print("clicking")
+    except Exception as e:
+        print("not found", e)
 
 
 if __name__ == "__main__":
@@ -75,4 +77,4 @@ if __name__ == "__main__":
         prompt = input("Ask a question: ")
         response = ask_chatgpt(prompt)
         type_message(response)
-        click_picture("", "share.png")
+        click_picture("", "op_slice.png")
