@@ -1,4 +1,4 @@
-# 0. Clone project (You need to setup your github command line)
+# 0. Clone project
 `git clone https://github.com/turnertrowbridge/CS582_AI-Agent`  
 or the GitHub Desktop app  
 
