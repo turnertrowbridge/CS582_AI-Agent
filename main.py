@@ -39,7 +39,7 @@ def type_message(message):
 
 client = OpenAI(
     # This is the default and can be omitted
-    api_key=config.api_key
+    api_key=config.API_KEY,
 )
 
 
@@ -60,11 +60,14 @@ def ask_chatgpt(prompt):
     return chat_completion.choices[0].message.content
 
 
-def click_picture(response):
+def click_picture(response, picture):
     words = response.split(" ")
     if "the" in words:
         print("clicking")
-        pyautogui.click("exampleProfilePic.png")
+        pyautogui.click(picture, confidence=0.9)
+        res = pyautogui.locateOnScreen(picture, confidence=0.9)
+        print(res)
+        pyautogui.click(res)
 
 
 if __name__ == "__main__":
@@ -72,4 +75,4 @@ if __name__ == "__main__":
         prompt = input("Ask a question: ")
         response = ask_chatgpt(prompt)
         type_message(response)
-        click_picture(response)
+        click_picture("", "share.png")
