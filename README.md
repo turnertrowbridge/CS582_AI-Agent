@@ -12,7 +12,7 @@ or the GitHub Desktop app
 
 # 3. Copy config.py.example to config.py and add your API key  
 `cp config.py.example config.py`  
-`API_KEY = "YOUR_API_KEY"`  
+open config.py and set `API_KEY = "YOUR_API_KEY"`  
 
 
 
