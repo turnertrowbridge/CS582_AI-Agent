@@ -3,7 +3,8 @@ import time
 from openai import OpenAI
 import config
 import random
-from items_database import item_info
+from items_database import item_info, set_filepaths
+import os
 
 start_prompt = "Act like you are a 50s cartoon villian. Respond to questions asked to you in 100 characters or less."
 
@@ -61,8 +62,7 @@ def ask_chatgpt(prompt):
     return chat_completion.choices[0].message.content
 
 
-def click_picture(response, picture):
-    words = response.split(" ")
+def click_picture(picture):
     try:
         # if "the" in words:
         res = pyautogui.locateOnScreen(picture, confidence=0.9)
@@ -71,26 +71,29 @@ def click_picture(response, picture):
         print("clicking")
     except Exception as e:
         print("not found", e)
-        
+
+
 def ask_gag_choice(items):
-    prompt = f"You have {len(items)} and you need to pick exactly 1 of them. Say back to me only the name of the item, no added words or punctuation. Here are the items: "
-    
+    prompt = f"You have {len(
+        items)} and you need to pick exactly 1 of them. Say back to me only the name of the item, no added words or punctuation. Here are the items: "
+
     for item in items[:-1]:
         prompt += item_info[item]["name"] + ", "
-    prompt += item_info[items[-1]]["name"]        
-    
-    print(prompt)  
-    
+    prompt += item_info[items[-1]]["name"]
+
+    print(prompt)
+
     return ask_chatgpt(prompt)
 
 
 def find_items():
-    items = [".\pictures\op_slice.png", ".\pictures\slice.png"]
+    items = item_info.keys()
+
     found_items = []
     for item in items:
         res = None
         try:
-            res = pyautogui.locateOnScreen(item, confidence=0.9)
+            res = pyautogui.locateOnScreen(item_info[item]["file_path"], confidence=0.9)
         except Exception as e:
             print("Could not find item", item, "\nerror:", e)
         if res:
@@ -99,6 +102,7 @@ def find_items():
 
 
 def ai_loop():
+    set_filepaths()
     while True:
         found_items = find_items()  # returns list of item.png
         if not found_items:
@@ -111,17 +115,21 @@ def ai_loop():
         # ask_chatgpt about the item
         # type_message(response)
         type_message(f"I chose {chosen_item}")
-        #pyautogui.click(chosen_item)
+        chosen_item = os.path.join("pictures", chosen_item) + ".png"
+        print(chosen_item)
+        click_picture(chosen_item)
+
         input("Press enter to continue: ")
+
 
 def old_test():
     while True:
         prompt = input("Ask a question: ")
         response = ask_chatgpt(prompt)
         type_message(response)
-        click_picture("", "./pictures/op_slice.png")
+        click_picture("./pictures/op_slice.png")
 
 
 if __name__ == "__main__":
-    #old_test()
+    # old_test()
     ai_loop()
