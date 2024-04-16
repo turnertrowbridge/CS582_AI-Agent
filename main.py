@@ -3,6 +3,7 @@ import time
 from openai import OpenAI
 import config
 import random
+from items_database import item_info
 
 start_prompt = "Act like you are a 50s cartoon villian. Respond to questions asked to you in 100 characters or less."
 
@@ -72,24 +73,26 @@ def click_picture(response, picture):
         print("not found", e)
         
 def ask_gag_choice(items):
-    prompt = f"You have {len(items)} and you need to pick exactly 1 of them. Say back to me only the name of the item. Here are the items: "
+    prompt = f"You have {len(items)} and you need to pick exactly 1 of them. Say back to me only the name of the item, no added words or punctuation. Here are the items: "
     
-    for item in items:
-        prompt += item + ", "
-                
+    for item in items[:-1]:
+        prompt += item_info[item]["name"] + ", "
+    prompt += item_info[items[-1]]["name"]        
+    
+    print(prompt)  
+    
     return ask_chatgpt(prompt)
 
 
-
 def find_items():
-    items = ["op_slice.png", "slice.png"]
+    items = [".\pictures\op_slice.png", ".\pictures\slice.png"]
     found_items = []
     for item in items:
         res = None
         try:
             res = pyautogui.locateOnScreen(item, confidence=0.9)
         except Exception as e:
-            print("Could not fine item", item, "\nerror:", e)
+            print("Could not find item", item, "\nerror:", e)
         if res:
             found_items.append(item)
     return found_items
@@ -103,12 +106,13 @@ def ai_loop():
             time.sleep(1)
             continue
         # forward items to the AI and get item back
-        chosen_item = random.choice(found_items)
+        chosen_item = ask_gag_choice(found_items)
 
         # ask_chatgpt about the item
         # type_message(response)
-        type_message("I chose")
-        # pyautogui.click(chosen_item)
+        type_message(f"I chose {chosen_item}")
+        #pyautogui.click(chosen_item)
+        input("Press enter to continue: ")
 
 def old_test():
     while True:
@@ -119,4 +123,5 @@ def old_test():
 
 
 if __name__ == "__main__":
-    old_test()
+    #old_test()
+    ai_loop()

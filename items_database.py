@@ -1,6 +1,6 @@
-items = {
+item_info = {
     "op_slice.png": {
-        "name": "slice",
+        "name": "sliceOP",
         "type": "throw",
         "description": "Slice of cream pie",
         "damage": 10
