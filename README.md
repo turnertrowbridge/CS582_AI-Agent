@@ -5,7 +5,10 @@ or the GitHub Desktop app
 
 # 1. Install and startup a virtual environment  
 `python3 -m venv env`  
+linux:
 `source env/bin/activate`  
+windows:
+`.\env\Scripts\activate`
 
 # 2. Install the requirements  
 `pip3 install -r requirements.txt`  
