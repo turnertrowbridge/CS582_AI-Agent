@@ -5,6 +5,7 @@ import config
 import random
 from items_database import item_info, set_filepaths
 import os
+import json
 
 start_prompt = "Act like you are a 50s cartoon villian. Respond to questions asked to you in 100 characters or less."
 
@@ -71,11 +72,15 @@ def click_picture(picture):
         print("clicking")
     except Exception as e:
         print("not found", e)
-
+        
+def get_description_from_name(name, items_database):
+    for item in items_database.values():
+        if item["name"] == name:
+            return item["description"]
+    return ""
 
 def ask_gag_choice(items):
-    prompt = f"You have {len(
-        items)} and you need to pick exactly 1 of them. Say back to me only the name of the item, no added words or punctuation. Here are the items: "
+    prompt = f"You have {len(items)} and you need to pick exactly 1 of them. Say back to me only the name of the item, no added words or punctuation. Here are the items: "
 
     for item in items[:-1]:
         prompt += item_info[item]["name"] + ", "
@@ -104,20 +109,31 @@ def find_items():
 def ai_loop():
     set_filepaths()
     while True:
+        # see what gags are possible to be used
         found_items = find_items()  # returns list of item.png
         if not found_items:
             print("No items found")
             time.sleep(1)
             continue
         # forward items to the AI and get item back
-        chosen_item = ask_gag_choice(found_items)
+        chosen_item = ask_gag_choice(found_items) # selects the gag it wants
 
         # ask_chatgpt about the item
         # type_message(response)
-        type_message(f"I chose {chosen_item}")
-        chosen_item = os.path.join("pictures", chosen_item) + ".png"
-        print(chosen_item)
-        click_picture(chosen_item)
+        # type_message(f"I chose {chosen_item}")
+        
+        # clicks on the gag
+        chosen_item_image = os.path.join("pictures", chosen_item) + ".png"
+        print(chosen_item_image)
+        click_picture(chosen_item_image)
+        
+        # types a joke or taunt based on the description of the selected gag
+        chosen_item_desc = get_description_from_name(chosen_item, json.loads(item_info))
+        prompt = "In 100 characters or less, make a joke or taunt your enemy relating to this action: " + chosen_item_desc
+        item_taunt_or_joke = ask_chatgpt(prompt)
+        type_message(item_taunt_or_joke)
+        
+        # still need something about running forward when you see the book
 
         input("Press enter to continue: ")
 
