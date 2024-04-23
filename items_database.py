@@ -209,6 +209,22 @@ item_info = {
         "damage": 0
     },
 
+    "ten_dollar": {
+        "name": "ten_dollar",
+        "file_path": "",
+        "type": "lure",
+        "description": "Baiting or luring the enemy robot into stepping toward you with a ten dollar bill",
+        "damage": 0
+    },
+
+    "ten_dollar_op": {
+        "name": "ten_dollar_op",
+        "file_path": "",
+        "type": "lure",
+        "description": "Baiting or luring the enemy robot into stepping toward you with a ten dollar bill",
+        "damage": 0
+    },
+
     "op_cupcake": {
         "name": "op_cupcake",
         "file_path": "",
