@@ -6,6 +6,8 @@ import random
 from items_database import item_info, set_filepaths
 import os
 import json
+import math
+import threading
 
 start_prompt = "Act like you are a 50s cartoon villian. Respond to questions asked to you in 100 characters or less."
 
@@ -94,19 +96,41 @@ def ask_gag_choice(items):
     return ask_chatgpt(prompt)
 
 
-def find_items():
-    items = item_info.keys()
-
-    found_items = []
+def search_items_chunk(items, found_items):
     for item in items:
         res = None
         try:
-            res = pyautogui.locateOnScreen(
-                item_info[item]["file_path"], confidence=0.9)
+            res = pyautogui.locateOnScreen(item_info[item]["file_path"], confidence=0.9)
         except Exception as e:
             print("Could not find item", item, "\nerror:", e)
         if res:
             found_items.append(item)
+
+
+def find_items():
+    items = list(item_info.keys())
+    chunk_size = math.ceil(len(items) / 7)  # Divide items into approximately equal chunks
+    chunks = [items[i:i+chunk_size] for i in range(0, len(items), chunk_size)]
+    found_items = []
+    threads = []
+
+    for chunk in chunks:
+        thread = threading.Thread(target=search_items_chunk, args=(chunk, found_items))
+        threads.append(thread)
+        thread.start()
+
+    for thread in threads:
+        thread.join()
+
+    # for item in items:
+    #     res = None
+    #     try:
+    #         res = pyautogui.locateOnScreen(
+    #             item_info[item]["file_path"], confidence=0.9)
+    #     except Exception as e:
+    #         print("Could not find item", item, "\nerror:", e)
+    #     if res:
+    #         found_items.append(item)
     return found_items
 
 
