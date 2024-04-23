@@ -1,16 +1,19 @@
 import os
-
 import pyautogui
 import math
 from items_database import item_info
 import threading
+import time
+
+GAME_ICON_X, GAME_ICON_Y = 100, 100
 
 
 def search_items_chunk(items, found_items):
     for item in items:
         res = None
         try:
-            res = pyautogui.locateOnScreen(item_info[item]["file_path"], confidence=0.9)
+            res = pyautogui.locateOnScreen(
+                item_info[item]["file_path"], confidence=0.9)
         except Exception as e:
             # Errors are expected if the item is not found
             pass
@@ -21,13 +24,16 @@ def search_items_chunk(items, found_items):
 
 def find_items():
     items = list(item_info.keys())
-    chunk_size = math.ceil(len(items) / 7)  # Divide items into approximately equal chunks
-    chunks = [items[i:i + chunk_size] for i in range(0, len(items), chunk_size)]
+    # Divide items into approximately equal chunks
+    chunk_size = math.ceil(len(items) / 8)
+    chunks = [items[i:i + chunk_size]
+              for i in range(0, len(items), chunk_size)]
     found_items = []
     threads = []
 
     for chunk in chunks:
-        thread = threading.Thread(target=search_items_chunk, args=(chunk, found_items))
+        thread = threading.Thread(
+            target=search_items_chunk, args=(chunk, found_items))
         threads.append(thread)
         thread.start()
 
@@ -35,6 +41,14 @@ def find_items():
         thread.join()
 
     return found_items
+
+
+def find_item_on_screen(picture):
+    try:
+        res = pyautogui.locateOnScreen(picture, confidence=0.9)
+        return res
+    except Exception as e:
+        return None
 
 
 def click_picture(picture):
@@ -57,3 +71,17 @@ def get_description_from_name(name, items_database):
 def get_filepath(chosen_item):
     chosen_item_image = os.path.join("pictures", chosen_item) + ".png"
     return chosen_item_image
+
+
+def in_battle():
+    return find_item_on_screen(get_filepath("book")) is None
+
+
+def run_to_next_floor():
+    pyautogui.keyDown("w")
+    time.sleep(5)
+
+
+def launch_game():
+    pyautogui.click(GAME_ICON_X, GAME_ICON_Y)
+    time.sleep(5)  # Adjust this time according to your game's launch time
