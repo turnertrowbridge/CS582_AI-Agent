@@ -1,3 +1,6 @@
+import os
+os.environ["OPENCV_LOG_LEVEL"]="FATAL"  # Suppress OpenCV warnings before importing pyautogui
+
 import pyautogui
 import time
 import config
