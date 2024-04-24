@@ -1,6 +1,6 @@
 # 0. Clone project
 `git clone https://github.com/turnertrowbridge/CS582_AI-Agent`  
-or the GitHub Desktop app  
+or open with GitHub Desktop app  
 
 
 # 1. Install and startup a virtual environment  
