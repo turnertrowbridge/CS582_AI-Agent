@@ -23,8 +23,23 @@ def main():
 
     while True:
         print("Checking if in battle...")
-        while auto_gui.in_battle():
-            print("Checking gags...")
+        print("In battle: ", auto_gui.in_battle())
+
+        if auto_gui.free_to_run():
+            print("Free to run, running...")
+            auto_gui.run_to_next_floor()
+            time.sleep(1)
+            continue
+
+        if auto_gui.in_battle():
+            print("In battle")
+
+            if auto_gui.arrow_on_screen_and_click():
+                time.sleep(1)
+                continue
+
+            print("Looking for gags...")
+
             # see what gags are possible to be used
             found_items = auto_gui.find_items()
             if not found_items:
@@ -34,6 +49,7 @@ def main():
 
             # forward items to the AI and get item back
             chosen_item = client.ask_gag_choice(found_items)
+            print("Selected item: ", chosen_item)
 
             # ask_chatgpt about the item and type joke or taunt
             chosen_item_description = auto_gui.get_description_from_name(chosen_item, items_database.item_info)
@@ -45,17 +61,11 @@ def main():
             time.sleep(1)
 
             # See if in multi-cog battle and select an arrow if so
-            if auto_gui.find_item_on_screen(auto_gui.get_filepath("arrow")):
-                print("Multiple cogs, selecting arrow...")
-                auto_gui.click_picture(auto_gui.get_filepath("arrow"))
-            time.sleep(3)
+            if auto_gui.arrow_on_screen_and_click():
+                time.sleep(1)
+                continue
 
-        # Sleep for a bit before checking if not in battle
-        time.sleep(5)
-        if not auto_gui.in_battle():
-            print("Not in battle, running to next floor...")
-            auto_gui.run_to_next_floor()
-            time.sleep(1)
+        time.sleep(3)
 
 
 if __name__ == "__main__":

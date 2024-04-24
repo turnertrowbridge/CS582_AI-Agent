@@ -46,7 +46,7 @@ class Client:
 
     def ask_gag_choice(self, items):
         prompt = (f"You have {len(items)} and you need to pick exactly 1 of them. Say back to me only the name of the "
-                  f"item, no added words or punctuation. Here are the items:")
+                  f"item, no added words or punctuation. Here are the items: ")
 
         for item in items[:-1]:
             prompt += self.item_info[item]["name"] + ", "

@@ -45,7 +45,7 @@ def find_items():
 
 def find_item_on_screen(picture):
     try:
-        res = pyautogui.locateOnScreen(picture, confidence=0.9)
+        res = pyautogui.locateOnScreen(picture, confidence=0.8)
         return res
     except Exception as e:
         return None
@@ -73,13 +73,28 @@ def get_filepath(chosen_item):
     return chosen_item_image
 
 
+def free_to_run():
+    return find_item_on_screen(get_filepath("book")) is not None
+
+
 def in_battle():
-    return find_item_on_screen(get_filepath("book")) is None
+    return find_item_on_screen(get_filepath("gag_question")) is not None
 
 
 def run_to_next_floor():
     pyautogui.keyDown("w")
     time.sleep(5)
+
+
+def arrow_on_screen_and_click():
+    arrow = get_filepath("arrow")
+
+    if find_item_on_screen(arrow):
+        print("Arrow found and clicked")
+        click_picture(arrow)
+        return True
+    else:
+        return False
 
 
 def launch_game():
