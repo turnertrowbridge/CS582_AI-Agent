@@ -57,6 +57,7 @@ def click_picture(picture):
         print(res)
         pyautogui.click(res)
         print("clicking")
+        pyautogui.click(GAME_ICON_X, GAME_ICON_Y)
     except Exception as e:
         print("not found", e)
 
