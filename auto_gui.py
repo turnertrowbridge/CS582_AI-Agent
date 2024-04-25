@@ -13,7 +13,7 @@ def search_items_chunk(items, found_items):
         res = None
         try:
             res = pyautogui.locateOnScreen(
-                item_info[item]["file_path"], confidence=0.9)
+                item_info[item]["file_path"], confidence=0.99)
         except Exception as e:
             # Errors are expected if the item is not found
             pass
