@@ -1,6 +1,7 @@
 import pyautogui
 from openai import OpenAI
 import time
+import prompts
 
 TEXT_INPUT_X, TEXT_INPUT_Y = 500, 500
 
@@ -13,8 +14,7 @@ class Client:
         # Replace these coordinates with the location of the text input field in your game
         self.text_input_x = TEXT_INPUT_X
         self.text_input_y = TEXT_INPUT_Y
-        self.start_prompt = ("Act like you are a 50s cartoon villain. Respond to questions asked to you in 100 "
-                             "characters or less.")
+        self.start_prompt = prompts.start_prompt
         self.item_info = item_info
         self.item_history = []
 
@@ -47,7 +47,17 @@ class Client:
 
     # Asks AI about gag and saves the choice
     def ask_chatgpt_about_gag(self, prompt):
-        response = self.ask_chatgpt(prompt)
+        chat_completion = self.client.chat.completions.create(
+            messages=[
+                {
+                    "role": "user",
+                    "content": prompt,
+                }
+            ],
+            model="gpt-3.5-turbo",
+        )
+        response = chat_completion.choices[0].message.content
+
         self.item_history.append(response)
         print("Item history:", self.item_history)
         return response
@@ -55,7 +65,7 @@ class Client:
     def ask_gag_choice(self, items):
         prompt = ""
         if self.item_history:
-            prompt += "Do not use the same item twice in a row. You have used the following items in the past: \n"
+            prompt += prompts.past_items_prompt
             for item in self.item_history:
                 try:
                     prompt += f'item: {self.item_info[item]["name"]} - type: {self.item_info[item]["type"]}\n '
@@ -63,12 +73,10 @@ class Client:
                     print("Item not found in item_info")
                     continue
 
-        prompt += (f"You have {len(items)} and you need to pick exactly 1 of them. Say back to me only the name of the "
-                  f"item, no added words or punctuation. Here are the items, followed by their type: ")
+        prompt += f"You have {len(items)} {prompts.item_selection_prompt}"
 
-        for item in items[:-1]:
-            prompt += f'item: {self.item_info[item]["name"]} - type: {self.item_info[item]["type"]}, '
-        prompt += f'item: {self.item_info[items[-1]]["name"]} - type: {self.item_info[items[-1]]["type"]}'
+        for item in items:
+            prompt += f'item: {self.item_info[item]["name"]} - type: {self.item_info[item]["type"]} \n'
 
         print(prompt)
 

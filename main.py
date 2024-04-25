@@ -35,8 +35,6 @@ def main():
         if auto_gui.in_battle():
             print("In battle")
 
-
-
             print("Looking for gags...")
 
             # see what gags are possible to be used
