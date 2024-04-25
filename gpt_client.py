@@ -62,14 +62,13 @@ class Client:
                 except KeyError:
                     print("Item not found in item_info")
                     continue
-            # prompt += f'item: {self.item_info[self.item_history[-1]]["name"]} - type: "{self.item_info[self.item_history[-1]]["type"]}\n'
 
         prompt += (f"You have {len(items)} and you need to pick exactly 1 of them. Say back to me only the name of the "
                   f"item, no added words or punctuation. Here are the items, followed by their type: ")
 
         for item in items[:-1]:
-            prompt += f'item: {self.item_info[item]["name"]} - type: "{self.item_info[item]["type"]}, '
-        prompt += f'item: {self.item_info[items[-1]]["name"]} - type: "{self.item_info[items[-1]]["type"]}'
+            prompt += f'item: {self.item_info[item]["name"]} - type: {self.item_info[item]["type"]}, '
+        prompt += f'item: {self.item_info[items[-1]]["name"]} - type: {self.item_info[items[-1]]["type"]}'
 
         print(prompt)
 
