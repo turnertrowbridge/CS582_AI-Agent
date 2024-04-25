@@ -565,5 +565,6 @@ item_info = {
 
 
 def set_filepaths():
+    print("Setting file paths for items in the database...")
     for item in item_info:
         item_info[item]["file_path"] = os.path.join("pictures", item) + ".png"

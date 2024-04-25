@@ -55,7 +55,7 @@ class Client:
     def ask_gag_choice(self, items):
         prompt = ""
         if self.item_history:
-            prompt += "Do not use the same item twice in a row. You have used the following items in the past: "
+            prompt += "Do not use the same item twice in a row. You have used the following items in the past: \n"
             for item in self.item_history:
                 try:
                     prompt += f'item: {self.item_info[item]["name"]} - type: {self.item_info[item]["type"]}\n '
@@ -79,6 +79,8 @@ class Client:
         item_taunt_or_joke = self.ask_chatgpt(prompt)
         self.type_message(item_taunt_or_joke)
 
+    def reset_item_history(self):
+        self.item_history = []
 
 
 

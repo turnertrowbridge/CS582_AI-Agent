@@ -29,14 +29,13 @@ def main():
             print("Free to run, running...")
             auto_gui.run_to_next_floor()
             time.sleep(1)
+            client.reset_item_history()
             continue
 
         if auto_gui.in_battle():
             print("In battle")
 
-            if auto_gui.arrow_on_screen_and_click():
-                time.sleep(1)
-                continue
+
 
             print("Looking for gags...")
 
@@ -64,6 +63,10 @@ def main():
             if auto_gui.arrow_on_screen_and_click():
                 time.sleep(1)
                 continue
+
+        if auto_gui.arrow_on_screen_and_click():
+            time.sleep(1)
+            continue
 
         time.sleep(3)
 
