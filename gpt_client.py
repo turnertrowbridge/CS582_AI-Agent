@@ -16,6 +16,7 @@ class Client:
         self.start_prompt = ("Act like you are a 50s cartoon villain. Respond to questions asked to you in 100 "
                              "characters or less.")
         self.item_info = item_info
+        self.item_history = []
 
     # Type message that is passed in by asking the AI
     def type_message(self, message):
@@ -44,17 +45,35 @@ class Client:
         )
         return chat_completion.choices[0].message.content
 
+    # Asks AI about gag and saves the choice
+    def ask_chatgpt_about_gag(self, prompt):
+        response = self.ask_chatgpt(prompt)
+        self.item_history.append(response)
+        print("Item history:", self.item_history)
+        return response
+
     def ask_gag_choice(self, items):
-        prompt = (f"You have {len(items)} and you need to pick exactly 1 of them. Say back to me only the name of the "
-                  f"item, no added words or punctuation. Here are the items: ")
+        prompt = ""
+        if self.item_history:
+            prompt += "Do not use the same item twice in a row. You have used the following items in the past: "
+            for item in self.item_history:
+                try:
+                    prompt += f'item: {self.item_info[item]["name"]} - type: {self.item_info[item]["type"]}\n '
+                except KeyError:
+                    print("Item not found in item_info")
+                    continue
+            # prompt += f'item: {self.item_info[self.item_history[-1]]["name"]} - type: "{self.item_info[self.item_history[-1]]["type"]}\n'
+
+        prompt += (f"You have {len(items)} and you need to pick exactly 1 of them. Say back to me only the name of the "
+                  f"item, no added words or punctuation. Here are the items, followed by their type: ")
 
         for item in items[:-1]:
-            prompt += self.item_info[item]["name"] + ", "
-        prompt += self.item_info[items[-1]]["name"]
+            prompt += f'item: {self.item_info[item]["name"]} - type: "{self.item_info[item]["type"]}, '
+        prompt += f'item: {self.item_info[items[-1]]["name"]} - type: "{self.item_info[items[-1]]["type"]}'
 
         print(prompt)
 
-        return self.ask_chatgpt(prompt)
+        return self.ask_chatgpt_about_gag(prompt)
 
     def say_gag_commentary(self, chosen_item_desc):
         prompt = "In 100 characters or less, make a joke or taunt your enemy relating to this action: " + chosen_item_desc
