@@ -28,7 +28,7 @@ class Client:
         pyautogui.press("t")
         time.sleep(0.5)
         for char in message:
-            pyautogui.typewrite(char, interval=0.01)  # lower interval to type faster
+            pyautogui.write(char, interval=0.001)  # lower interval to type faster
             # time.sleep(random.normalvariate(typing_speed_mean, typing_speed_std_dev))
         pyautogui.press("enter")
 

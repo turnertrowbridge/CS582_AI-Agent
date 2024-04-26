@@ -78,7 +78,7 @@ def main():
 
             auto_gui.close_chat()
 
-        time.sleep(0)
+        time.sleep(4)
 
 
 if __name__ == "__main__":
