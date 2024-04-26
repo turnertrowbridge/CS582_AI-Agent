@@ -1,40 +1,58 @@
 import pyautogui
 import pytesseract
 from PIL import Image
-
-# Function to recognize text from an image
-
-
-def recognize_text(image_path):
-    image = Image.open(image_path)
-    text = pytesseract.image_to_string(image)
-    return text
-
-# Function to capture a screenshot of the text box region
+import time
 
 
-def capture_text_box_region(x, y, width, height):
-    screenshot = pyautogui.screenshot(region=(x, y, width, height))
-    screenshot.save('text_box_screenshot.png')
+class ChatReply:
+    def __init__(self, client):
+        self.client = client
+        self.text_box_x = 20
+        self.text_box_y = 110
+        self.text_box_width = 620
+        self.text_box_height = 250
+        self.last_chat = None
+        self.default_screenshot_path = 'text_box_screenshot.png'
 
-def get_last_chat(messages):
-    messages = messages.split(':')
-    return messages[-1]
+    # Function to recognize text from an image
+    def _recognize_text(self, image_path):
+        try:
+            image = Image.open(image_path)
+        except Exception:
+            return None
+        try:
+            text = pytesseract.image_to_string(image)
+        except Exception:
+            return None
+        return text
 
-# Example coordinates of the text box region (adjust as per your screen)
-text_box_x = 20
-text_box_y = 110
-text_box_width = 620
-text_box_height = 250
+    # Function to capture a screenshot of the text box region
+    def _capture_text_box_region(self):
+        screenshot = pyautogui.screenshot(region=(self.text_box_x, self.text_box_y,
+                                                  self.text_box_width, self.text_box_height))
+        screenshot.save(self.default_screenshot_path)
+        return self.default_screenshot_path
 
-# Capture screenshot of the text box region
-capture_text_box_region(text_box_x, text_box_y,
-                        text_box_width, text_box_height)
+    # Function to extract the last chat message from the recognized text
+    def _get_last_chat(self, messages):
+        messages = messages.split(':')
+        return messages[-1]
 
-# Recognize text from the captured screenshot
-recognized_text = recognize_text('text_box_screenshot.png')
+    def click_npc_chat_tab(self):
+        pyautogui.press('t')
+        pyautogui.click(440, 75)
 
-# Process the recognized text
-print("Recognized Text:", recognized_text)
+    def process_last_chat_and_reply(self):
+        time.sleep(2)
+        screenshot_path = self._capture_text_box_region()
+        text = self._recognize_text(screenshot_path)
+        last_chat = self._get_last_chat(text)
+        print("Last chat:", last_chat)
 
-print("Last Chat:", get_last_chat(recognized_text))
+        if last_chat != self.last_chat:
+            print("New last chat detected")
+            self.last_chat = last_chat
+            reply = self.client.ask_chatgpt(last_chat)
+            print("Reply:", reply)
+            return reply
+        return None
