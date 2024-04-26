@@ -68,7 +68,7 @@ def main():
             time.sleep(1)
 
         # Check last chat
-        else:
+        elif client.has_item_history():
             time.sleep(2)
             chat_reply_instance = chat_reply.ChatReply(client)
             chat_reply_instance.click_npc_chat_tab()

@@ -18,6 +18,9 @@ class Client:
         self.item_info = item_info
         self.item_history = []
 
+    def has_item_history(self):
+        return len(self.item_history) > 0
+
     # Type message that is passed in by asking the AI
     def type_message(self, message):
         pyautogui.click(self.text_input_x, self.text_input_y)
