@@ -62,7 +62,8 @@ def main():
             # See if in multi-cog battle and select an arrow if so
             if auto_gui.arrow_on_screen_and_click():
                 time.sleep(1)
-                continue
+
+            time.sleep(4)
 
         elif auto_gui.arrow_on_screen_and_click():
             time.sleep(1)
