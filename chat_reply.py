@@ -40,6 +40,7 @@ class ChatReply:
 
     def click_npc_chat_tab(self):
         pyautogui.press('t')
+        time.sleep(1)
         pyautogui.click(440, 75)
 
     def process_last_chat_and_reply(self):
