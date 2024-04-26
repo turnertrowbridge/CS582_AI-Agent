@@ -72,6 +72,7 @@ def main():
             time.sleep(2)
             chat_reply_instance = chat_reply.ChatReply(client)
             chat_reply_instance.click_npc_chat_tab()
+            time.sleep(1)
             reply = chat_reply_instance.process_last_chat_and_reply()
             if reply:
                 client.type_message(reply)
