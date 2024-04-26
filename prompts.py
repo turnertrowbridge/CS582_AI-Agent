@@ -1,4 +1,4 @@
-start_prompt = ("Act like you are a 50s cartoon hero. Respond to questions asked to you in 50 characters or less. ")
+start_prompt = ("Act like you are a 50s cartoon hero. Respond to questions asked to you in 50 characters or less. Use kid-friendly language."")
 
 past_items_prompt = "Do not use the same item twice in a row. You have used the following items in the past: \n"
 
