@@ -7,6 +7,7 @@ import config
 import gpt_client
 import items_database
 import auto_gui
+import chat_reply
 
 game_name = "corporateclash"
 
@@ -30,9 +31,8 @@ def main():
             auto_gui.run_to_next_floor()
             time.sleep(1)
             client.reset_item_history()
-            continue
 
-        if auto_gui.in_battle():
+        elif auto_gui.in_battle():
             print("In battle")
 
             print("Looking for gags...")
@@ -51,6 +51,8 @@ def main():
             # ask_chatgpt about the item and type joke or taunt
             chosen_item_description = auto_gui.get_description_from_name(chosen_item, items_database.item_info)
             client.say_gag_commentary(chosen_item_description)
+            time.sleep(1)
+            auto_gui.close_chat()
 
             # click on the gag
             chosen_item_image = auto_gui.get_filepath(chosen_item)
@@ -60,13 +62,24 @@ def main():
             # See if in multi-cog battle and select an arrow if so
             if auto_gui.arrow_on_screen_and_click():
                 time.sleep(1)
-                continue
 
-        if auto_gui.arrow_on_screen_and_click():
+            time.sleep(4)
+
+        elif auto_gui.arrow_on_screen_and_click():
             time.sleep(1)
-            continue
 
-        time.sleep(3)
+        # Check last chat
+        elif client.has_item_history():
+            time.sleep(2)
+            chat_reply_instance = chat_reply.ChatReply(client)
+            chat_reply_instance.click_npc_chat_tab()
+            reply = chat_reply_instance.process_last_chat_and_reply()
+            if reply:
+                client.type_message(reply)
+
+            auto_gui.close_chat()
+
+        time.sleep(4)
 
 
 if __name__ == "__main__":

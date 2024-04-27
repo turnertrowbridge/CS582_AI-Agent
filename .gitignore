@@ -2,3 +2,4 @@ env/
 config.py
 __pycache__/
 .idea/
+text_box_screenshot.png

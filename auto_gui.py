@@ -5,7 +5,7 @@ from items_database import item_info
 import threading
 import time
 
-GAME_ICON_X, GAME_ICON_Y = 100, 100
+GAME_ICON_X, GAME_ICON_Y = 100, 150
 
 
 def search_items_chunk(items, found_items):
@@ -13,8 +13,8 @@ def search_items_chunk(items, found_items):
         res = None
         try:
             res = pyautogui.locateOnScreen(
-                item_info[item]["file_path"], confidence=0.95)
-        except Exception as e:
+                item_info[item]["file_path"], confidence=0.99)
+        except Exception:
             # Errors are expected if the item is not found
             pass
             # print("Could not find item", item, "\nerror:", e)
@@ -47,7 +47,7 @@ def find_item_on_screen(picture):
     try:
         res = pyautogui.locateOnScreen(picture, confidence=0.8)
         return res
-    except Exception as e:
+    except Exception:
         return None
 
 
@@ -101,3 +101,8 @@ def arrow_on_screen_and_click():
 def launch_game():
     pyautogui.click(GAME_ICON_X, GAME_ICON_Y)
     time.sleep(5)  # Adjust this time according to your game's launch time
+
+
+def close_chat():
+    pyautogui.click(673, 79)
+    time.sleep(1)

@@ -18,6 +18,9 @@ class Client:
         self.item_info = item_info
         self.item_history = []
 
+    def has_item_history(self):
+        return len(self.item_history) > 0
+
     # Type message that is passed in by asking the AI
     def type_message(self, message):
         pyautogui.click(self.text_input_x, self.text_input_y)
@@ -25,7 +28,7 @@ class Client:
         pyautogui.press("t")
         time.sleep(0.5)
         for char in message:
-            pyautogui.typewrite(char, interval=0.01)  # lower interval to type faster
+            pyautogui.write(char, interval=0.001)  # lower interval to type faster
             # time.sleep(random.normalvariate(typing_speed_mean, typing_speed_std_dev))
         pyautogui.press("enter")
 
