@@ -1,5 +1,5 @@
 openai==1.17.1
-opencv-python==4.9.0.80 
+opencv-python==4.9.0.80
 pillow==10.3.0
 PyAutoGUI==0.9.54
 pytesseract==0.3.10
