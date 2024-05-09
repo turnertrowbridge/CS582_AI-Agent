@@ -1,3 +1,4 @@
+# Need this up top to disable OpenCV logging
 import os
 os.environ["OPENCV_LOG_LEVEL"] = "FATAL"
 
@@ -10,9 +11,6 @@ import auto_gui
 import chat_reply
 
 game_name = "corporateclash"
-
-typing_speed_mean = 0.001  # Mean time between keystrokes in seconds
-typing_speed_std_dev = 0.02  # Standard deviation of typing speed in seconds
 
 
 def main():
